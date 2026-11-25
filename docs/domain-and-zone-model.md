@@ -1,0 +1,5 @@
+# Domain and zone model
+
+Canonical authoritative server names: ns1.ousdal.net, ns2.ousdal.net, ns3.ousdal.net. Alternative branded names: ns1.ploos.no, ns2.ploos.no, ns3.ploos.no. NS targets must resolve directly to address records, not CNAMEs. Operational DNS and glue requirements must be verified separately.
+
+Registered domains, delegated child zones (e.g. sirdal.venstre.no or sirdal.seniornett.no), and externally managed hostnames are distinct resources. Do not assume a two-label domain or ownership of the parent. A child zone requires authorized parent delegation; external DNS hosting requires verified control of the relevant records. Hosting, Mail and Cloud must support verified names independently of registrar ownership. Parent ownership does not automatically grant customer access to child resources. Registration, renewal and transfer controls apply only to eligible registered domains. Use public suffix data for registration eligibility, not to prohibit delegated zones. Verify control and tenant authorization server-side before provisioning. Preview fixtures use reserved .example names. No live DNS or backend implementation is included.
