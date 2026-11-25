@@ -1,0 +1,3 @@
+# Container pilot
+
+Node adapter, Node 22 runtime, non-root container and loopback-only Compose example. Health endpoint checks process availability only. Login remains disabled. Manual main workflow publishes commit-tagged GHCR image after smoke tests. Deploy by reviewed image digest, not tag. Proposed Forseti port 18091, subject to availability. Set ORIGIN to exact approved HTTPS origin behind Caddy. No public exposure until reviewed; noindex is not access control. Base images and npm dependencies are not fully locked yet; add lockfile and base digests before production. No deployment or CI result claimed.
