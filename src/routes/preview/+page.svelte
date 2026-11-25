@@ -5,7 +5,7 @@
   const organization = getContext<{ organizations: { id: string; display_name: string; kind: string; role: string }[]; selected: () => string }>('preview-organization');
   let selected = $derived(organization.selected());
   let current = $derived(organization.organizations.find(org => org.id === selected));
-  import { summaryFor } from '#lib/preview-data';
+  import { summaryFor } from '#lib/preview-data.js';
   let summary = $derived(current ? summaryFor(current.id) : undefined);
   const links = [
     { path: '/preview/products', nb: 'Tjenester', en: 'Services' },
