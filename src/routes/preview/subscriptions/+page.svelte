@@ -10,13 +10,8 @@
     suspended: { nb: 'Suspendert', en: 'Suspended' },
     cancelled: { nb: 'Avsluttet', en: 'Cancelled' }
   };
-  const subscriptions = [
-    { id: 'demo-1', organization: 'business', product: 'Ploos Hosting', provider: 'Ploos', plan: 'Demo Web', status: 'active' },
-    { id: 'demo-2', organization: 'business', product: 'Ploos Mail', provider: 'Ploos', plan: 'Starter (5)', status: 'pending' },
-    { id: 'demo-3', organization: 'association', product: 'Ploos Cloud', provider: 'Ploos', plan: 'Demo Drive (5)', status: 'suspended' },
-    { id: 'demo-4', organization: 'association', product: 'Ploos Hosting', provider: 'Ploos', plan: 'Demo Web', status: 'cancelled' }
-  ] as const;
-  let visible = $derived(subscriptions.filter((item) => item.organization === selected));
+  import { subscriptionsFor } from '#lib/preview-data';
+  let visible = $derived(subscriptionsFor(selected));
 </script>
 <svelte:head><title>Subscription preview | Ploos</title><meta name="robots" content="noindex" /></svelte:head>
 <main>
