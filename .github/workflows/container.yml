@@ -15,7 +15,16 @@ jobs:
         run: |
           docker run -d --name portal-test --read-only --cap-drop ALL -p 127.0.0.1:18080:8080 -e ORIGIN=http://127.0.0.1:18080 portal-test
           trap 'docker logs portal-test; docker rm -f portal-test' EXIT
-          curl --retry 20 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:18080/healthz
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl --max-time 2 -fsS http://127.0.0.1:18080/healthz; then
+              ready=1
+              break
+            fi
+            test "$(docker inspect -f '{{.State.Running}}' portal-test)" = true
+            sleep 1
+          done
+          test "$ready" = 1
           test "$(docker exec portal-test id -u)" != 0
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/auth/login)" = 503
       - name: Publish reviewed main commit
