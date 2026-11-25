@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { setContext } from 'svelte';
+  import { onMount, setContext } from 'svelte';
   import OrganizationSelector from '#lib/components/OrganizationSelector.svelte';
   import { organizations } from '#lib/preview-data.js';
   let selected = $state('business');
@@ -8,6 +8,21 @@
   let dark = $state(false);
   let language = $state<'nb' | 'en'>('nb');
   setContext('preview-language', () => language);
+  onMount(() => {
+    try {
+      const savedLanguage = localStorage.getItem('ploos-preview-language');
+      if (savedLanguage === 'nb' || savedLanguage === 'en') language = savedLanguage;
+      dark = localStorage.getItem('ploos-preview-theme') === 'dark';
+    } catch { /* Storage may be unavailable. */ }
+  });
+  function toggleLanguage() {
+    language = language === 'nb' ? 'en' : 'nb';
+    try { localStorage.setItem('ploos-preview-language', language); } catch { /* Keep in-memory preference. */ }
+  }
+  function toggleTheme() {
+    dark = !dark;
+    try { localStorage.setItem('ploos-preview-theme', dark ? 'dark' : 'light'); } catch { /* Keep in-memory preference. */ }
+  }
   let { children } = $props();
   const links = [
     { path: '/preview', nb: 'Oversikt', en: 'Overview' },
@@ -22,8 +37,8 @@
   <aside>
     <a href="/">Ploos Portal</a>
     <p>Demo · Beta</p>
-    <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
-    <button aria-pressed={dark} onclick={() => dark = !dark}>{language === 'nb' ? 'Mørkt tema' : 'Dark theme'}</button>
+    <button onclick={toggleLanguage}>{language === 'nb' ? 'English' : 'Norsk'}</button>
+    <button aria-pressed={dark} onclick={toggleTheme}>{language === 'nb' ? 'Mørkt tema' : 'Dark theme'}</button>
     <nav aria-label={language === 'nb' ? 'Portalmeny' : 'Portal navigation'}>
       {#each links as link}
         <a href={link.path} aria-current={page.url.pathname === link.path ? 'page' : undefined}>{link[language]}</a>
