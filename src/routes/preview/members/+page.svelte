@@ -5,7 +5,7 @@
   const organization = getContext<{ organizations: { id: string; display_name: string; kind: string; role: string }[]; selected: () => string }>('preview-organization');
   let selected = $derived(organization.selected());
   const roles = ['owner', 'admin', 'member', 'viewer'] as const;
-  import { membersFor } from '#lib/preview-data';
+  import { membersFor } from '#lib/preview-data.js';
   let members = $derived(membersFor(selected));
   const permissions = [
     { nb: 'Se tjenester', en: 'View services', allowed: roles },
