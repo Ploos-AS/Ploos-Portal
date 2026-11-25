@@ -1,21 +1,25 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { setContext } from 'svelte';
+  let language = $state<'nb' | 'en'>('nb');
+  setContext('preview-language', () => language);
   let { children } = $props();
   const links = [
-    { path: '/preview', label: 'Oversikt / Overview' },
-    { path: '/preview/organizations', label: 'Organisasjoner / Organizations' },
-    { path: '/preview/catalog', label: 'Produktkatalog / Catalog' },
-    { path: '/preview/subscriptions', label: 'Abonnementer / Subscriptions' },
-    { path: '/preview/members', label: 'Medlemmer / Members' }
+    { path: '/preview', nb: 'Oversikt', en: 'Overview' },
+    { path: '/preview/organizations', nb: 'Organisasjoner', en: 'Organizations' },
+    { path: '/preview/catalog', nb: 'Produktkatalog', en: 'Catalog' },
+    { path: '/preview/subscriptions', nb: 'Abonnementer', en: 'Subscriptions' },
+    { path: '/preview/members', nb: 'Medlemmer', en: 'Members' }
   ];
 </script>
-<div class="shell">
+<div class="shell" lang={language}>
   <aside>
     <a href="/">Ploos Portal</a>
     <p>Demo · Beta</p>
-    <nav aria-label="Portal navigation">
+    <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
+    <nav aria-label={language === 'nb' ? 'Portalmeny' : 'Portal navigation'}>
       {#each links as link}
-        <a href={link.path} aria-current={page.url.pathname === link.path ? 'page' : undefined}>{link.label}</a>
+        <a href={link.path} aria-current={page.url.pathname === link.path ? 'page' : undefined}>{link[language]}</a>
       {/each}
     </nav>
   </aside>
