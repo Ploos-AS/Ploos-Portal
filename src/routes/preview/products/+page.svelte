@@ -17,7 +17,7 @@
   <p>{language === 'nb' ? 'Planlagte produktfamilier. Ingen live tjenestestatus eller administrasjon i denne demoen.' : 'Planned product families. No live service status or management in this demo.'}</p>
   <div class="grid">
     {#each products as product (product.name)}
-      <article><h2>{product.name}</h2><p>{product[language]}</p>{#if product.name === 'Ploos Domains'}<a href="/preview/products/domains">{language === 'nb' ? 'Se domeneoversikt' : 'View domain portfolio'}</a>{:else}<small>{language === 'nb' ? 'Administrasjon ikke aktivert' : 'Management not enabled'}</small>{/if}</article>
+      <article><h2>{product.name}</h2><p>{product[language]}</p>{#if product.name === 'Ploos Domains'}<a href="/preview/products/domains">{language === 'nb' ? 'Se domeneoversikt' : 'View domain portfolio'}</a>{:else if product.name === 'Ploos DNS'}<a href="/preview/products/dns">{language === 'nb' ? 'Se DNS-soner' : 'View DNS zones'}</a>{:else}<small>{language === 'nb' ? 'Administrasjon ikke aktivert' : 'Management not enabled'}</small>{/if}</article>
     {/each}
   </div>
   <p><a href="/preview/subscriptions">{language === 'nb' ? 'Se fiktive abonnementer for valgt organisasjon' : 'View fictional subscriptions for selected organization'}</a></p>

@@ -65,3 +65,15 @@ test('domain preview filters fictional portfolio by organization', async ({ page
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen domener i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('DNS preview filters zones by organization', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se DNS-soner' }).click();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toBeVisible();
+  await expect(page.getByRole('cell', { name: 'AAAA', exact: true })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByRole('heading', { name: 'demo-association.example' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen DNS-soner i valgt demoorganisasjon.')).toBeVisible();
+});
