@@ -51,6 +51,6 @@ test('mobile preview fits viewport and supports keyboard skip link', async ({ pa
   for (const name of ['Oversikt', 'Organisasjoner', 'Tjenester', 'Produktkatalog', 'Abonnementer', 'Medlemmer']) {
     await nav.getByRole('link', { name, exact: true }).click();
     await expect(nav.getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), { message: `Horizontal overflow on ${name}` }).toBeLessThanOrEqual(0);
   }
 });
