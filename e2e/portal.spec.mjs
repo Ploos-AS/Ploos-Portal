@@ -89,3 +89,15 @@ test('hosting preview supports multiple domain arrangements', async ({ page }) =
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen webhotell i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('mail preview separates mailboxes and filters organizations', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se e-posttjenester' }).click();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Delte postkasser' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByRole('heading', { name: 'sirdal.seniornett.example' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen e-posttjenester i valgt demoorganisasjon.')).toBeVisible();
+});
