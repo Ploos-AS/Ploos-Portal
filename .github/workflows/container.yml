@@ -1,0 +1,37 @@
+name: Portal container
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t portal-test .
+      - name: Smoke test
+        run: |
+          docker run -d --name portal-test --read-only --cap-drop ALL -p 127.0.0.1:18080:8080 -e ORIGIN=http://127.0.0.1:18080 portal-test
+          trap 'docker logs portal-test; docker rm -f portal-test' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl --max-time 2 -fsS http://127.0.0.1:18080/healthz; then
+              ready=1
+              break
+            fi
+            test "$(docker inspect -f '{{.State.Running}}' portal-test)" = true
+            sleep 1
+          done
+          test "$ready" = 1
+          test "$(docker exec portal-test id -u)" != 0
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/auth/login)" = 503
+      - name: Publish reviewed main commit
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag portal-test "ghcr.io/ploos-as/ploos-portal:sha-$GITHUB_SHA"
+          docker push "ghcr.io/ploos-as/ploos-portal:sha-$GITHUB_SHA"

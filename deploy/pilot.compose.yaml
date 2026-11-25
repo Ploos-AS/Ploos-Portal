@@ -1,0 +1,11 @@
+services:
+  portal:
+    image: ${PLOOS_PORTAL_IMAGE:?required}
+    environment:
+      ORIGIN: ${PLOOS_PORTAL_ORIGIN:?required}
+    ports:
+      - "127.0.0.1:${PLOOS_PORTAL_PORT:?required}:8080"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
