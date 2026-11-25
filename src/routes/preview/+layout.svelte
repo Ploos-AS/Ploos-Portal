@@ -60,12 +60,14 @@
   nav a { padding: 12px; border-radius: 8px; text-decoration: none; }
   nav a[aria-current="page"] { background: #fff; color: #19372f; font-weight: bold; }
   a:focus-visible { outline: 3px solid #e4b95f; outline-offset: 3px; }
-  .workspace { min-width: 0; }
+  .workspace, aside, #preview-content { min-width: 0; overflow-wrap: anywhere; }
+  .workspace :global(main) { box-sizing: border-box; max-width: min(100%, 70rem); }
+  .workspace :global(.scroll) { max-width: 100%; }
   header { padding: 1rem; border-bottom: 1px solid var(--border); }
   header :global(label) { max-width: 24rem; }
   .skip-link { position: absolute; left: 1rem; top: 1rem; transform: translateY(-200%); z-index: 10; background: var(--control); color: var(--ink); padding: .75rem; }
   .skip-link:focus { transform: none; }
   .shell :global(button), .shell :global(select) { min-height: 44px; max-width: 100%; }
   nav a { min-height: 44px; box-sizing: border-box; }
-  @media (max-width: 700px) { .shell { grid-template-columns: 1fr; } nav { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); } }
+  @media (max-width: 700px) { .shell { grid-template-columns: minmax(0, 1fr); } nav { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); } }
 </style>
