@@ -25,3 +25,17 @@ test('health and disabled login', async ({ request }) => {
   expect(await health.json()).toEqual({ status: 'ok' });
   expect((await request.get('/auth/login')).status()).toBe(503);
 });
+
+test('language and theme survive reload', async ({ page }) => {
+  await page.goto('/preview');
+  await page.getByRole('button', { name: 'English' }).click();
+  await page.getByRole('button', { name: 'Dark theme' }).click();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Dark theme' })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Dark theme' }).click();
+  await page.getByRole('button', { name: 'Norsk' }).click();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Oversikt', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mørkt tema' })).toHaveAttribute('aria-pressed', 'false');
+});
