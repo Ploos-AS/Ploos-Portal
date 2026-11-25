@@ -5,14 +5,8 @@
   const organization = getContext<{ organizations: { id: string; display_name: string; kind: string; role: string }[]; selected: () => string }>('preview-organization');
   let selected = $derived(organization.selected());
   const roles = ['owner', 'admin', 'member', 'viewer'] as const;
-  const businessMembers = [
-    { name: 'Demo A', role: 'owner' },
-    { name: 'Demo B', role: 'admin' },
-    { name: 'Demo C', role: 'member' },
-    { name: 'Demo D', role: 'viewer' }
-  ];
-  const associationMembers = [{ name: 'Demo E', role: 'owner' }, { name: 'Demo F', role: 'member' }];
-  let members = $derived(selected === 'business' ? businessMembers : selected === 'association' ? associationMembers : []);
+  import { membersFor } from '#lib/preview-data';
+  let members = $derived(membersFor(selected));
   const permissions = [
     { nb: 'Se tjenester', en: 'View services', allowed: roles },
     { nb: 'Administrere tjenester', en: 'Manage services', allowed: ['owner', 'admin'] },
