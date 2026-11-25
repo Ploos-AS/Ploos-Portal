@@ -1,5 +1,7 @@
 <script lang="ts">
-  let language = $state<'nb' | 'en'>('nb');
+  import { getContext } from 'svelte';
+  const getLanguage = getContext<() => 'nb' | 'en'>('preview-language');
+  let language = $derived(getLanguage());
   let selected = $state('business');
   const labels = {
     pending: { nb: 'Venter', en: 'Pending' },
@@ -19,7 +21,6 @@
 <main>
   <a href="/preview">{language === 'nb' ? 'Tilbake' : 'Back'}</a>
   <h1>{language === 'nb' ? 'Abonnementer' : 'Subscriptions'}</h1>
-  <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
   <p>{language === 'nb' ? 'Kun fiktive demodata. Ingen faktiske abonnementer eller driftsstatus.' : 'Fictional demo data only. No real subscriptions or service health.'}</p>
   <label>{language === 'nb' ? 'Demoorganisasjon' : 'Demo organization'}
     <select bind:value={selected}>
