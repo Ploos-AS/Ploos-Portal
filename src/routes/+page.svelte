@@ -29,6 +29,7 @@
       <span class="eyebrow">PLOOS AS / KUNDEPORTAL</span>
       <h1>Alle tjenestene dine.<br /><em>Ett sted.</em></h1>
       <p class="lead">Vi bygger én samlet inngang til domener, hosting, e-post, sky og foreningsverktøy. Her skal du etter hvert få oversikt og kontroll – uten å hoppe mellom systemer.</p>
+      <p><a href="/preview" style="text-decoration: underline; font-weight: 700;">Se forhåndsvisning av kundeportalen →</a></p>
       <div class="notice" role="status">
         <span class="notice-icon" aria-hidden="true">i</span>
         <div><strong>Dette er en tidlig pilot.</strong><br />Innlogging og kundeoversikt er ikke aktivert ennå. Ingen kundedata vises på denne siden.</div>
