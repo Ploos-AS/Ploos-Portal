@@ -34,6 +34,7 @@
   ];
 </script>
 <div class="shell" class:dark lang={language}>
+  <a class="skip-link" href="#preview-content">{language === 'nb' ? 'Hopp til innhold' : 'Skip to content'}</a>
   <aside>
     <a href="/">Ploos Portal</a>
     <p>Demo · Beta</p>
@@ -45,7 +46,7 @@
       {/each}
     </nav>
   </aside>
-  <div class="workspace"><header><OrganizationSelector {organizations} {selected} {language} onchange={(id) => selected = id} /></header>{@render children()}</div>
+  <div class="workspace"><header><OrganizationSelector {organizations} {selected} {language} onchange={(id) => selected = id} /></header><div id="preview-content" tabindex="-1">{@render children()}</div></div>
 </div>
 <style>
   .shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; background: var(--surface); color: var(--ink); color-scheme: light; --surface: #f6f7f2; --ink: #19372f; --control: #fff; --border: #82968c; }
@@ -59,8 +60,14 @@
   nav a { padding: 12px; border-radius: 8px; text-decoration: none; }
   nav a[aria-current="page"] { background: #fff; color: #19372f; font-weight: bold; }
   a:focus-visible { outline: 3px solid #e4b95f; outline-offset: 3px; }
-  .workspace { min-width: 0; }
+  .workspace, aside, #preview-content { min-width: 0; overflow-wrap: anywhere; }
+  .workspace :global(main) { box-sizing: border-box; max-width: min(100%, 70rem); }
+  .workspace :global(.scroll) { max-width: 100%; }
   header { padding: 1rem; border-bottom: 1px solid var(--border); }
   header :global(label) { max-width: 24rem; }
-  @media (max-width: 700px) { .shell { grid-template-columns: 1fr; } nav { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
+  .skip-link { position: absolute; left: 1rem; top: 1rem; transform: translateY(-200%); z-index: 10; background: var(--control); color: var(--ink); padding: .75rem; }
+  .skip-link:focus { transform: none; }
+  .shell :global(button), .shell :global(select) { min-height: 44px; max-width: 100%; }
+  nav a { min-height: 44px; box-sizing: border-box; }
+  @media (max-width: 700px) { .shell { grid-template-columns: minmax(0, 1fr); } nav { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); } }
 </style>
