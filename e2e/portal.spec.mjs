@@ -101,3 +101,16 @@ test('mail preview separates mailboxes and filters organizations', async ({ page
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen e-posttjenester i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('cloud preview filters instances and shows planned tracks', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se skytjenester' }).click();
+  await expect(page.getByText('cloud.demo-business.example', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'kSuite', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Proton', exact: true })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByText('cloud.sirdal.seniornett.example', { exact: true })).toBeVisible();
+  await expect(page.getByText('cloud.demo-business.example', { exact: true })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen skytjenester i valgt demoorganisasjon.')).toBeVisible();
+});
