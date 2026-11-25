@@ -16,6 +16,7 @@
   const links = [
     { path: '/preview', nb: 'Oversikt', en: 'Overview' },
     { path: '/preview/organizations', nb: 'Organisasjoner', en: 'Organizations' },
+    { path: '/preview/products', nb: 'Tjenester', en: 'Services' },
     { path: '/preview/catalog', nb: 'Produktkatalog', en: 'Catalog' },
     { path: '/preview/subscriptions', nb: 'Abonnementer', en: 'Subscriptions' },
     { path: '/preview/members', nb: 'Medlemmer', en: 'Members' }
