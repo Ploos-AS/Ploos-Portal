@@ -77,3 +77,15 @@ test('DNS preview filters zones by organization', async ({ page }) => {
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen DNS-soner i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('hosting preview supports multiple domain arrangements', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se webhotell' }).click();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByText('Delegert subdomene', { exact: true })).toBeVisible();
+  await expect(page.getByText('Ekstern DNS', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen webhotell i valgt demoorganisasjon.')).toBeVisible();
+});
