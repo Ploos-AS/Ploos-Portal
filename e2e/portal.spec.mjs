@@ -147,3 +147,18 @@ test('support preview filters fictional tickets by organization', async ({ page 
   await expect(page.getByText('Ingen supportsaker i valgt demoorganisasjon.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Ny supportsak (ikke aktivert)' })).toBeDisabled();
 });
+
+test('all expanded preview routes fit mobile viewport in both languages', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto('/preview');
+  for (const language of ['nb', 'en']) {
+    if (language === 'en') await page.getByRole('button', { name: 'English' }).click();
+    for (const path of ['products/domains', 'products/dns', 'products/hosting', 'products/mail', 'products/cloud', 'products/forenio', 'billing', 'support']) {
+      const response = await page.goto('/preview/' + path);
+      expect(response.status()).toBe(200);
+      await expect(page.locator('.shell')).toHaveAttribute('lang', language);
+      await page.getByRole('combobox').selectOption('association');
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), { message: language + ': ' + path }).toBeLessThanOrEqual(0);
+    }
+  }
+});
