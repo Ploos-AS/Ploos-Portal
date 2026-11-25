@@ -31,7 +31,8 @@
     { path: '/preview/catalog', nb: 'Produktkatalog', en: 'Catalog' },
     { path: '/preview/subscriptions', nb: 'Abonnementer', en: 'Subscriptions' },
     { path: '/preview/members', nb: 'Medlemmer', en: 'Members' },
-    { path: '/preview/billing', nb: 'Fakturering', en: 'Billing' }
+    { path: '/preview/billing', nb: 'Fakturering', en: 'Billing' },
+    { path: '/preview/support', nb: 'Kundestøtte', en: 'Support' }
   ];
 </script>
 <div class="shell" class:dark lang={language}>
