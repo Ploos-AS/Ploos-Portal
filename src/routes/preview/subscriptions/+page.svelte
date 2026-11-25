@@ -10,7 +10,7 @@
     suspended: { nb: 'Suspendert', en: 'Suspended' },
     cancelled: { nb: 'Avsluttet', en: 'Cancelled' }
   };
-  import { subscriptionsFor } from '#lib/preview-data';
+  import { subscriptionsFor } from '#lib/preview-data.js';
   let visible = $derived(subscriptionsFor(selected));
 </script>
 <svelte:head><title>Subscription preview | Ploos</title><meta name="robots" content="noindex" /></svelte:head>
