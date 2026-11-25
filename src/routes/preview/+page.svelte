@@ -5,12 +5,8 @@
   const organization = getContext<{ organizations: { id: string; display_name: string; kind: string; role: string }[]; selected: () => string }>('preview-organization');
   let selected = $derived(organization.selected());
   let current = $derived(organization.organizations.find(org => org.id === selected));
-  const summaries: Record<string, { subscriptions: number; active: number; members: number }> = {
-    business: { subscriptions: 2, active: 1, members: 4 },
-    association: { subscriptions: 2, active: 0, members: 2 },
-    empty: { subscriptions: 0, active: 0, members: 0 }
-  };
-  let summary = $derived(current ? summaries[current.id] : undefined);
+  import { summaryFor } from '#lib/preview-data.js';
+  let summary = $derived(current ? summaryFor(current.id) : undefined);
   const links = [
     { path: '/preview/products', nb: 'Tjenester', en: 'Services' },
     { path: '/preview/catalog', nb: 'Produktkatalog', en: 'Catalog' },

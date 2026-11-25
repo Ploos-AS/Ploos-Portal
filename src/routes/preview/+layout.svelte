@@ -2,11 +2,7 @@
   import { page } from '$app/state';
   import { setContext } from 'svelte';
   import OrganizationSelector from '#lib/components/OrganizationSelector.svelte';
-  const organizations = [
-    { id: 'business', display_name: 'Demo AS', kind: 'business', role: 'owner' },
-    { id: 'association', display_name: 'Demo forening', kind: 'association', role: 'member' },
-    { id: 'empty', display_name: 'Demo 3', kind: 'association', role: 'owner' }
-  ];
+  import { organizations } from '#lib/preview-data.js';
   let selected = $state('business');
   setContext('preview-organization', { organizations, selected: () => selected });
   let dark = $state(false);
