@@ -135,3 +135,15 @@ test('billing preview distinguishes owner and member access', async ({ page }) =
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen fakturaer i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('support preview filters fictional tickets by organization', async ({ page }) => {
+  await page.goto('/preview');
+  await page.getByRole('link', { name: 'Kundestøtte', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Spørsmål om HTTPS' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByRole('heading', { name: 'Delegering av subdomene' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Spørsmål om HTTPS' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen supportsaker i valgt demoorganisasjon.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ny supportsak (ikke aktivert)' })).toBeDisabled();
+});
