@@ -1,6 +1,14 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { setContext } from 'svelte';
+  import OrganizationSelector from '$lib/components/OrganizationSelector.svelte';
+  const organizations = [
+    { id: 'business', display_name: 'Demo AS', kind: 'business', role: 'owner' },
+    { id: 'association', display_name: 'Demo forening', kind: 'association', role: 'member' },
+    { id: 'empty', display_name: 'Demo 3', kind: 'association', role: 'owner' }
+  ];
+  let selected = $state('business');
+  setContext('preview-organization', { organizations, selected: () => selected });
   let dark = $state(false);
   let language = $state<'nb' | 'en'>('nb');
   setContext('preview-language', () => language);
@@ -25,7 +33,7 @@
       {/each}
     </nav>
   </aside>
-  <div class="workspace">{@render children()}</div>
+  <div class="workspace"><header><OrganizationSelector {organizations} {selected} {language} onchange={(id) => selected = id} /></header>{@render children()}</div>
 </div>
 <style>
   .shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; background: var(--surface); color: var(--ink); color-scheme: light; --surface: #f6f7f2; --ink: #19372f; --control: #fff; --border: #82968c; }
@@ -40,5 +48,7 @@
   nav a[aria-current="page"] { background: #fff; color: #19372f; font-weight: bold; }
   a:focus-visible { outline: 3px solid #e4b95f; outline-offset: 3px; }
   .workspace { min-width: 0; }
+  header { padding: 1rem; border-bottom: 1px solid var(--border); }
+  header :global(label) { max-width: 24rem; }
   @media (max-width: 700px) { .shell { grid-template-columns: 1fr; } nav { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
 </style>
