@@ -1,0 +1,24 @@
+groups:
+  - name: ploos-portal
+    rules:
+      - alert: PloosPortalProbeFailed
+        expr: probe_success{job="ploos-portal"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Ploos Portal probe failed: {{ $labels.check }}"
+      - alert: PloosPortalProbeMissing
+        expr: absent(probe_success{job="ploos-portal",check="homepage"}) or absent(probe_success{job="ploos-portal",check="health"})
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Ploos Portal monitoring data missing"
+      - alert: PloosPortalCertificateExpiring
+        expr: (probe_ssl_earliest_cert_expiry{job="ploos-portal"} - time()) < 14 * 86400
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Ploos Portal TLS certificate expires within 14 days"
