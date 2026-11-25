@@ -2,13 +2,17 @@
   import { getContext } from 'svelte';
   const getLanguage = getContext<() => 'nb' | 'en'>('preview-language');
   let language = $derived(getLanguage());
+  const organization = getContext<{ organizations: { id: string; display_name: string; kind: string; role: string }[]; selected: () => string }>('preview-organization');
+  let selected = $derived(organization.selected());
   const roles = ['owner', 'admin', 'member', 'viewer'] as const;
-  const members = [
+  const businessMembers = [
     { name: 'Demo A', role: 'owner' },
     { name: 'Demo B', role: 'admin' },
     { name: 'Demo C', role: 'member' },
     { name: 'Demo D', role: 'viewer' }
   ];
+  const associationMembers = [{ name: 'Demo E', role: 'owner' }, { name: 'Demo F', role: 'member' }];
+  let members = $derived(selected === 'business' ? businessMembers : selected === 'association' ? associationMembers : []);
   const permissions = [
     { nb: 'Se tjenester', en: 'View services', allowed: roles },
     { nb: 'Administrere tjenester', en: 'Manage services', allowed: ['owner', 'admin'] },
@@ -22,6 +26,7 @@
   <a href="/preview">{language === 'nb' ? 'Tilbake' : 'Back'}</a>
   <h1>{language === 'nb' ? 'Medlemmer og roller' : 'Members and roles'}</h1>
   <p>{language === 'nb' ? 'Fiktive medlemmer. Ingen endringer kan utføres.' : 'Fictional members. Changes are disabled.'}</p>
+  {#if members.length === 0}<p>{language === 'nb' ? 'Ingen demomedlemmer' : 'No demo members'}</p>{/if}
   <ul>{#each members as member (member.name)}<li>{member.name}: {member.role}</li>{/each}</ul>
   <h2>{language === 'nb' ? 'Rettigheter' : 'Permissions'}</h2>
   <div class="scroll">
