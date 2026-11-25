@@ -1,5 +1,7 @@
 <script lang="ts">
-  let language = $state<'nb' | 'en'>('nb');
+  import { getContext } from 'svelte';
+  const getLanguage = getContext<() => 'nb' | 'en'>('preview-language');
+  let language = $derived(getLanguage());
   const roles = ['owner', 'admin', 'member', 'viewer'] as const;
   const members = [
     { name: 'Demo A', role: 'owner' },
@@ -19,7 +21,6 @@
 <main>
   <a href="/preview">{language === 'nb' ? 'Tilbake' : 'Back'}</a>
   <h1>{language === 'nb' ? 'Medlemmer og roller' : 'Members and roles'}</h1>
-  <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
   <p>{language === 'nb' ? 'Fiktive medlemmer. Ingen endringer kan utføres.' : 'Fictional members. Changes are disabled.'}</p>
   <ul>{#each members as member (member.name)}<li>{member.name}: {member.role}</li>{/each}</ul>
   <h2>{language === 'nb' ? 'Rettigheter' : 'Permissions'}</h2>

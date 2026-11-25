@@ -1,5 +1,7 @@
 <script lang="ts">
-  let language = $state<'nb' | 'en'>('nb');
+  import { getContext } from 'svelte';
+  const getLanguage = getContext<() => 'nb' | 'en'>('preview-language');
+  let language = $derived(getLanguage());
   const products = [
     { name: 'Ploos Domains', nb: 'Domeneregistrering og forvaltning', en: 'Domain registration and management' },
     { name: 'Ploos DNS', nb: 'DNS-soner og poster', en: 'DNS zones and records' },
@@ -19,7 +21,6 @@
 <main>
   <a href="/preview">{language === 'nb' ? 'Tilbake' : 'Back'}</a>
   <h1>{language === 'nb' ? 'Produktkatalog' : 'Product catalog'}</h1>
-  <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
   <p>{language === 'nb' ? 'Forhåndsvisning av planlagte produkter. Ingen bestilling eller priser.' : 'Preview of planned products. No ordering or pricing.'}</p>
   <div class="grid">
     {#each products as product (product.name)}

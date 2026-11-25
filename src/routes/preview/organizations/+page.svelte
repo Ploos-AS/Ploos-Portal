@@ -1,7 +1,9 @@
 <script lang="ts">
   import OrganizationSelector from '$lib/components/OrganizationSelector.svelte';
   let selected = $state('');
-  let language = $state<'nb' | 'en'>('nb');
+  import { getContext } from 'svelte';
+  const getLanguage = getContext<() => 'nb' | 'en'>('preview-language');
+  let language = $derived(getLanguage());
   const organizations = [
     { id: 'demo-business', display_name: 'Demo AS', kind: 'business', role: 'owner' },
     { id: 'demo-association', display_name: 'Demo forening', kind: 'association', role: 'member' }
@@ -13,7 +15,6 @@
 <main>
   <a href="/preview">{language === 'nb' ? 'Tilbake' : 'Back'}</a>
   <h1>{language === 'nb' ? 'Organisasjoner' : 'Organizations'}</h1>
-  <button onclick={() => language = language === 'nb' ? 'en' : 'nb'}>{language === 'nb' ? 'English' : 'Norsk'}</button>
   <p>{language === 'nb' ? 'Demodata – ingen ekte tilgang eller innlogging.' : 'Demo data – no real access or sign-in.'}</p>
   <OrganizationSelector {organizations} {selected} {language} onchange={(id) => selected = id} />
   {#if current}
