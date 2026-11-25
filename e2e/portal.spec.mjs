@@ -114,3 +114,14 @@ test('cloud preview filters instances and shows planned tracks', async ({ page }
   await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
   await expect(page.getByText('Ingen skytjenester i valgt demoorganisasjon.')).toBeVisible();
 });
+
+test('Forenio preview distinguishes association eligibility and roles', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se Forenio' }).click();
+  await expect(page.getByText('Tilknytning er beregnet på foreninger.')).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByText('Eier eller administrator må be om tilknytning.')).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Kan be om tilknytning når integrasjonen er tilgjengelig.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Koble til Forenio (ikke aktivert)' })).toBeDisabled();
+});
