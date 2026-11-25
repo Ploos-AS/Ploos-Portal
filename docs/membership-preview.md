@@ -1,0 +1,3 @@
+# Membership preview
+
+The isolated /preview/members route uses fictional members and an indicative role matrix matching the Core authorization model. It has no mutation controls or real data. Core must authorize every membership operation and enforce the last-owner invariant transactionally. Admins cannot modify owners or admins or grant those roles. Future invitations, verified identity enrollment, board handover, audit events and authorized membership list/mutation endpoints require implementation and tests. Never derive permissions from the browser or provider groups. CI and browser validation pending.
