@@ -39,3 +39,18 @@ test('language and theme survive reload', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Oversikt', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Mørkt tema' })).toHaveAttribute('aria-pressed', 'false');
 });
+
+test('mobile preview fits viewport and supports keyboard skip link', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto('/preview');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Hopp til innhold' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#preview-content')).toBeFocused();
+  const nav = page.getByRole('navigation', { name: 'Portalmeny' });
+  for (const name of ['Oversikt', 'Organisasjoner', 'Tjenester', 'Produktkatalog', 'Abonnementer', 'Medlemmer']) {
+    await nav.getByRole('link', { name, exact: true }).click();
+    await expect(nav.getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+});
