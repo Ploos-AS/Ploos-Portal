@@ -125,3 +125,13 @@ test('Forenio preview distinguishes association eligibility and roles', async ({
   await expect(page.getByText('Kan be om tilknytning når integrasjonen er tilgjengelig.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Koble til Forenio (ikke aktivert)' })).toBeDisabled();
 });
+
+test('billing preview distinguishes owner and member access', async ({ page }) => {
+  await page.goto('/preview/billing');
+  await expect(page.getByRole('heading', { name: 'DEMO-001' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByText('Kun organisasjonens eier har tilgang til fakturering i denne demoen.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'DEMO-001' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen fakturaer i valgt demoorganisasjon.')).toBeVisible();
+});

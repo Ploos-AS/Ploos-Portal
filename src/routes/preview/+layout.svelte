@@ -30,7 +30,8 @@
     { path: '/preview/products', nb: 'Tjenester', en: 'Services' },
     { path: '/preview/catalog', nb: 'Produktkatalog', en: 'Catalog' },
     { path: '/preview/subscriptions', nb: 'Abonnementer', en: 'Subscriptions' },
-    { path: '/preview/members', nb: 'Medlemmer', en: 'Members' }
+    { path: '/preview/members', nb: 'Medlemmer', en: 'Members' },
+    { path: '/preview/billing', nb: 'Fakturering', en: 'Billing' }
   ];
 </script>
 <div class="shell" class:dark lang={language}>
