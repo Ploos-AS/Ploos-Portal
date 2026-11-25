@@ -54,3 +54,14 @@ test('mobile preview fits viewport and supports keyboard skip link', async ({ pa
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), { message: `Horizontal overflow on ${name}` }).toBeLessThanOrEqual(0);
   }
 });
+
+test('domain preview filters fictional portfolio by organization', async ({ page }) => {
+  await page.goto('/preview/products');
+  await page.getByRole('link', { name: 'Se domeneoversikt' }).click();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('association');
+  await expect(page.getByRole('heading', { name: 'demo-association.example' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'demo-business.example' })).toHaveCount(0);
+  await page.getByRole('combobox', { name: 'Organisasjon' }).selectOption('empty');
+  await expect(page.getByText('Ingen domener i valgt demoorganisasjon.')).toBeVisible();
+});
